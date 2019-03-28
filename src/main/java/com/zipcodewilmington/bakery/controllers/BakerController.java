@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class BakerController {
@@ -19,7 +16,7 @@ public class BakerController {
         this.service = service;
     }
 
-    @Autowired
+    @GetMapping(value = "/bakers/")
     public ResponseEntity<Iterable<Baker>> index() {
         return new ResponseEntity<>(service.index(), HttpStatus.OK);
     }
@@ -34,11 +31,13 @@ public class BakerController {
         return new ResponseEntity<>(service.create(baker), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Baker> update(Long id, Baker baker) {
+    @PutMapping(value = "/bakers/{id}")
+    public ResponseEntity<Baker> update(@PathVariable Long id, @RequestBody Baker baker) {
         return new ResponseEntity<>(service.update(id, baker), HttpStatus.OK);
     }
 
-    public ResponseEntity<Boolean> destroy(Long id) {
+    @DeleteMapping(value = "/bakers/{id}")
+    public ResponseEntity<Boolean> destroy(@PathVariable Long id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
     }
 }
